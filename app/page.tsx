@@ -52,14 +52,6 @@ export default function Home() {
             <SignedIn>
               <UserButton />
             </SignedIn>
-            {/* <Link href="/login">
-              <Button variant="ghost" size="sm">
-                Log in
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">Sign up</Button>
-            </Link> */}
           </div>
         </div>
       </header>
