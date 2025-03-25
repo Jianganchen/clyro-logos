@@ -4,8 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
+  title: "ClyroLogo",
+  description: "A website that generates logos for your brand",
   generator: "v0.dev",
 };
 
