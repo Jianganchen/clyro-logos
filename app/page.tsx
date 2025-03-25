@@ -125,8 +125,8 @@ export default function Home() {
                 Simple, transparent pricing
               </h2>
               <p className="mx-auto mt-4 max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                Choose the plan that's right for you and start creating amazing
-                images today.
+                Choose the plan that&apos;s right for you and start creating
+                amazing images today.
               </p>
             </div>
             <PricingCards />

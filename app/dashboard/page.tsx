@@ -1,23 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { DashboardLayout } from "@/components/dashboard-layout"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ImageGenerationForm } from "@/components/image-generation-form"
-import { ImageGallery } from "@/components/image-gallery"
+import { DashboardLayout } from "@/components/dashboard-layout";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ImageGenerationForm } from "@/components/image-generation-form";
+import { ImageGallery } from "@/components/image-gallery";
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState("generate")
-
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Generate and manage your AI images</p>
+          <p className="text-muted-foreground">
+            Generate and manage your AI images
+          </p>
         </div>
 
-        <Tabs defaultValue="generate" className="w-full" onValueChange={setActiveTab}>
+        <Tabs defaultValue="generate" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
             <TabsTrigger value="generate">Generate</TabsTrigger>
             <TabsTrigger value="gallery">My Gallery</TabsTrigger>
@@ -31,6 +30,5 @@ export default function DashboardPage() {
         </Tabs>
       </div>
     </DashboardLayout>
-  )
+  );
 }
-
