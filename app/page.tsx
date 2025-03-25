@@ -4,6 +4,13 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PricingCards } from "@/components/pricing-cards";
 import { Features } from "@/components/features";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -32,14 +39,27 @@ export default function Home() {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link href="/login">
+            <SignedOut>
+              <SignInButton>
+                <Button variant="ghost" size="sm">
+                  Log in
+                </Button>
+              </SignInButton>
+              <SignUpButton>
+                <Button size="sm">Sign up</Button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            {/* <Link href="/login">
               <Button variant="ghost" size="sm">
                 Log in
               </Button>
             </Link>
             <Link href="/signup">
               <Button size="sm">Sign up</Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </header>
@@ -58,12 +78,12 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link href="/signup">
+                <SignInButton>
                   <Button size="lg" className="gap-1.5">
                     Get started
                     <ArrowRight className="h-4 w-4" />
                   </Button>
-                </Link>
+                </SignInButton>
                 <Link href="#examples">
                   <Button size="lg" variant="outline">
                     View examples
