@@ -29,16 +29,39 @@ export function ImageGenerationForm() {
 
     setIsGenerating(true);
 
-    // Simulate API call to generate images
-    setTimeout(() => {
-      // Generate random placeholder images
-      const images = Array(4)
-        .fill(0)
-        .map(() => `/placeholder.svg?height=512&width=512`);
+    try {
+      const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt }),
+      });
 
-      setGeneratedImages(images);
+      const data = await res.json();
       setIsGenerating(false);
-    }, 2000);
+
+      if (data.output) {
+        console.log("AI says:", data.output);
+        // setOutput(data.output); // Or however you're storing it
+      } else {
+        console.error(data.error);
+      }
+
+      setTimeout(() => {
+        // Generate random placeholder images
+        const images = Array(4)
+          .fill(0)
+          .map(() => `/placeholder.svg?height=512&width=512`);
+
+        setGeneratedImages(images);
+        setIsGenerating(false);
+      }, 2000);
+    } catch (err) {
+      console.error("API call failed", err);
+      setIsGenerating(false);
+    }
+    setIsGenerating(false);
   };
 
   return (

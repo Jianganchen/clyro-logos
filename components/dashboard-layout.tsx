@@ -1,36 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { LayoutDashboard, Image, Settings, LogOut, Menu, Sparkles, User } from "lucide-react"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { LayoutDashboard, Image, Settings, Menu, Sparkles } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { UserButton } from "@clerk/nextjs";
 
 interface DashboardLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const pathname = usePathname()
-  const [isMounted, setIsMounted] = useState(false)
+  const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
 
   // Prevent hydration errors
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
   const navigation = [
     {
@@ -51,10 +43,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       icon: Settings,
       current: pathname === "/dashboard/settings",
     },
-  ]
+  ];
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   return (
@@ -81,7 +73,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                         key={item.name}
                         href={item.href}
                         className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${
-                          item.current ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                          item.current
+                            ? "bg-primary text-primary-foreground"
+                            : "hover:bg-muted"
                         }`}
                       >
                         <item.icon className="h-5 w-5" />
@@ -94,39 +88,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </Sheet>
             <Link href="/" className="flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold hidden md:inline-block">ImageAI</span>
+              <span className="text-xl font-bold hidden md:inline-block">
+                ImageAI
+              </span>
             </Link>
           </div>
           <div className="flex items-center gap-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="" alt="User" />
-                    <AvatarFallback>
-                      <User className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserButton />
           </div>
         </div>
       </header>
@@ -139,7 +107,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   key={item.name}
                   href={item.href}
                   className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${
-                    item.current ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                    item.current
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-muted"
                   }`}
                 >
                   <item.icon className="h-5 w-5" />
@@ -152,6 +122,5 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <main className="flex-1 p-6 md:p-8">{children}</main>
       </div>
     </div>
-  )
+  );
 }
-
