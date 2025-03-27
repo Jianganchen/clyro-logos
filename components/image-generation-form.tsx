@@ -47,6 +47,16 @@ export function ImageGenerationForm() {
       } else {
         console.error(data.error);
       }
+
+      setTimeout(() => {
+        // Generate random placeholder images
+        const images = Array(4)
+          .fill(0)
+          .map(() => `/placeholder.svg?height=512&width=512`);
+
+        setGeneratedImages(images);
+        setIsGenerating(false);
+      }, 2000);
     } catch (err) {
       console.error("API call failed", err);
       setIsGenerating(false);
