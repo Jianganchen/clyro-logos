@@ -12,7 +12,7 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground">
-            Generate and manage your AI images
+            Generate and manage your AI logo
           </p>
         </div>
 
