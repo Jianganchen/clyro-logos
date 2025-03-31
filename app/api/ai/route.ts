@@ -9,15 +9,14 @@ export async function POST(req: Request) {
   const { prompt } = await req.json();
 
   try {
-    const response = await client.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: "You are a professional logo designer" },
-        { role: "user", content: prompt },
-      ],
+    const response = await client.images.generate({
+      model: "dall-e-3",
+      prompt: prompt,
+      n: 1,
+      size: "1024x1024",
     });
 
-    const output = response.choices[0].message.content;
+    const output = response.data[0].url;
 
     return NextResponse.json({ output });
   } catch (err) {
