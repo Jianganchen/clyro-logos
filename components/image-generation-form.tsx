@@ -39,24 +39,23 @@ export function ImageGenerationForm() {
       });
 
       const data = await res.json();
-      setIsGenerating(false);
 
-      if (data.output) {
-        console.log("AI says:", data.output);
-        // setOutput(data.output); // Or however you're storing it
-      } else {
+      if (!data.output) {
         console.error(data.error);
       }
 
-      setTimeout(() => {
-        // Generate random placeholder images
-        const images = Array(4)
-          .fill(0)
-          .map(() => `/placeholder.svg?height=512&width=512`);
+      setGeneratedImages([data.output]);
+      setIsGenerating(false);
 
-        setGeneratedImages(images);
-        setIsGenerating(false);
-      }, 2000);
+      // setTimeout(() => {
+      //   // Generate random placeholder images
+      //   const images = Array(4)
+      //     .fill(0)
+      //     .map(() => `/placeholder.svg?height=512&width=512`);
+
+      //   setGeneratedImages(images);
+      //   setIsGenerating(false);
+      // }, 2000);
     } catch (err) {
       console.error("API call failed", err);
       setIsGenerating(false);
