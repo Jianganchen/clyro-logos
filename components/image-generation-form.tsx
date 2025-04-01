@@ -7,7 +7,6 @@ import { Wand2, Loader2, ImagePlus, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import {
   Select,
   SelectContent,
@@ -22,6 +21,7 @@ export function ImageGenerationForm() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [imageCount, setImageCount] = useState<number>(1);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,11 +96,33 @@ export function ImageGenerationForm() {
           </div>
 
           <div className="space-y-2">
-            <div className="flex justify-between">
-              <Label>Number of images</Label>
-              <span className="text-sm text-muted-foreground">4</span>
-            </div>
-            <Slider defaultValue={[4]} min={1} max={8} step={1} />
+            <Label>Model</Label>
+            <Select defaultValue="DALL-E-2">
+              <SelectTrigger>
+                <SelectValue placeholder="Select model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="DALL-E-2">DALL-E-2</SelectItem>
+                <SelectItem value="DALL-E-3">DALL-E-3</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Number of Images</Label>
+            <Select
+              value={imageCount.toString()}
+              onValueChange={(value) => setImageCount(Number(value))}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select number" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">1</SelectItem>
+                <SelectItem value="4">4</SelectItem>
+                <SelectItem value="8">8</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <Button
@@ -127,7 +149,7 @@ export function ImageGenerationForm() {
         <h3 className="text-lg font-medium">Generated Images</h3>
         {isGenerating ? (
           <div className="grid grid-cols-2 gap-4">
-            {Array(4)
+            {Array(imageCount)
               .fill(0)
               .map((_, i) => (
                 <div
