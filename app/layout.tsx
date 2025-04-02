@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import Provider from "@/app/provider";
 
 export const metadata: Metadata = {
   title: "ClyroLogo",
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>{children}</body>
+        <body>
+          <Provider>{children}</Provider>
+        </body>
       </html>
     </ClerkProvider>
   );
