@@ -65,11 +65,13 @@ export default function Home() {
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                  Generate stunning images with AI
+                  Fire your Logo Designer,
+                </h1>
+                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+                  let AI do the work
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Create beautiful, unique images in seconds with our advanced
-                  AI image generator.
+                  Create stunning logos in seconds with AI
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
