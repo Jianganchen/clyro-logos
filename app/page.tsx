@@ -11,6 +11,7 @@ import {
   SignUpButton,
   UserButton,
 } from "@clerk/nextjs";
+import { Logo } from "@/components/logo";
 
 export default function Home() {
   return (
@@ -18,8 +19,8 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold">ImageAI</span>
+            <Logo className="w-9 h-9" />
+            <span className="text-xl font-bold">ClyroLogo</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <Link
@@ -186,8 +187,8 @@ export default function Home() {
       <footer className="border-t py-6 md:py-8">
         <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
-            <span className="font-semibold">ImageAI</span>
+            <Logo className="w-6 h-6" />
+            <span className="font-semibold">ClyroLogo</span>
           </div>
           <p className="text-center text-sm text-muted-foreground md:text-left">
             &copy; {new Date().getFullYear()} ImageAI. All rights reserved.
