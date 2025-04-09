@@ -13,6 +13,8 @@ import {
 } from "@clerk/nextjs";
 import { Logo } from "@/components/logo";
 
+import { logos } from "@/lib/data";
+
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
@@ -94,27 +96,21 @@ export default function Home() {
               Examples of what you can create
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
+              {logos.map((logo, i) => (
                 <div
                   key={i}
                   className="overflow-hidden rounded-lg bg-background shadow"
                 >
                   <div className="aspect-square w-full bg-muted">
                     <img
-                      src={`/placeholder.svg?height=400&width=400`}
-                      alt={`Example generated image ${i}`}
+                      src={logo.src}
+                      alt={`Example generated image ${logo.alt}`}
                       className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="p-4">
                     <p className="text-sm text-muted-foreground">
-                      {`"A ${
-                        i % 2 === 0
-                          ? "futuristic cityscape"
-                          : "serene landscape"
-                      } with ${
-                        i % 3 === 0 ? "vibrant colors" : "subtle lighting"
-                      }"`}
+                      {logo.prompt}
                     </p>
                   </div>
                 </div>
