@@ -16,6 +16,8 @@ export const upsertFromClerk = internalMutation({
       email: data.email_addresses[0].email_address,
       clerkUserId: data.id,
       username: `${data.first_name} ${data.last_name}`,
+      subscription: "free" as const,
+      tokens: 40,
     };
 
     const user = await userByClerkUserId(ctx, data.id);

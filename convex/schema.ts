@@ -6,6 +6,17 @@ export default defineSchema({
     email: v.string(),
     clerkUserId: v.string(),
     username: v.optional(v.string()),
-    subscription: v.optional(v.string()),
+    subscription: v.union(
+      v.literal("free"),
+      v.literal("starter"),
+      v.literal("pro")
+    ),
+    tokens: v.number(),
   }).index("byClerkUserId", ["clerkUserId"]),
+
+  subscriptionPlans: defineTable({
+    name: v.union(v.literal("free"), v.literal("starter"), v.literal("pro")),
+    monthlyQuota: v.number(),
+    price: v.number(),
+  }),
 });
