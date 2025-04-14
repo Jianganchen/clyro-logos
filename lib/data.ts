@@ -35,3 +35,5 @@ export const logos = [
       "An abstract, minimalistic deer logo in a flat vector style. The deer is designed with bold, geometric, and sharp shapes, featuring stylized antlers and a dynamic pose. The logo uses a strong earthy orange color as the background and a white silhouette for the deer, enclosed within a rounded rectangle. The overall style feels elegant, timeless, and sophisticated, with influences from ancient art and modern minimalism.",
   },
 ];
+
+export const ImageGenPrice = 10;

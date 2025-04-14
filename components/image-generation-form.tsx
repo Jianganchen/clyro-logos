@@ -14,10 +14,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ImageGenPrice as price } from "@/lib/data";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { useUser } from "@clerk/clerk-react";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export function ImageGenerationForm() {
+  const { user } = useUser();
+  const clerkUserId = user?.id;
+
+  const subtractTokens = useMutation(api.tokens.subtractUserTokens);
+
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
@@ -26,6 +35,11 @@ export function ImageGenerationForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
+
+    if (!clerkUserId) {
+      console.error("User not found");
+      return;
+    }
 
     setIsGenerating(true);
 
@@ -44,20 +58,11 @@ export function ImageGenerationForm() {
         console.error(data.error);
       }
 
+      await subtractTokens({ clerkUserId, amount: price });
       setGeneratedImages([data.output]);
       setIsGenerating(false);
-
-      // setTimeout(() => {
-      //   // Generate random placeholder images
-      //   const images = Array(4)
-      //     .fill(0)
-      //     .map(() => `/placeholder.svg?height=512&width=512`);
-
-      //   setGeneratedImages(images);
-      //   setIsGenerating(false);
-      // }, 2000);
     } catch (err) {
-      console.error("API call failed", err);
+      console.error("Error generating logo or subtracting tokens", err);
       setIsGenerating(false);
     }
     setIsGenerating(false);
@@ -138,7 +143,10 @@ export function ImageGenerationForm() {
             ) : (
               <>
                 <Wand2 className="mr-2 h-4 w-4" />
-                Generate Images
+                <span>Generate Images</span>
+                <span className="rounded-full bg-muted text-muted-foreground px-2 py-0.5 text-xs font-medium">
+                  {price} tokens
+                </span>
               </>
             )}
           </Button>
