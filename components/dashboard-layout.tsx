@@ -7,9 +7,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Image, Settings, Menu, Sparkles } from "lucide-react";
 
+import { IconCoin } from "@tabler/icons-react";
+
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -18,6 +22,13 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
+
+  const { user } = useUser();
+  const clerkUserId = user?.id;
+  const userTokens = useQuery(
+    api.tokens.getUserTokens,
+    clerkUserId ? { clerkUserId } : "skip"
+  );
 
   // Prevent hydration errors
   useEffect(() => {
@@ -94,6 +105,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </Link>
           </div>
           <div className="flex items-center gap-4">
+            {userTokens && (
+              <div className="flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-sm font-medium">
+                <IconCoin className="h-4 w-4 text-primary" />
+                {userTokens.tokens}
+              </div>
+            )}
             <UserButton />
           </div>
         </div>
