@@ -14,6 +14,13 @@ export default defineSchema({
     tokens: v.number(),
   }).index("byClerkUserId", ["clerkUserId"]),
 
+  images: defineTable({
+    userId: v.id("users"),
+    imageUrl: v.string(),
+    prompt: v.string(),
+    createdAt: v.string(),
+  }).index("byUser", ["userId"]),
+
   subscriptionPlans: defineTable({
     name: v.union(v.literal("free"), v.literal("starter"), v.literal("pro")),
     monthlyQuota: v.number(),
