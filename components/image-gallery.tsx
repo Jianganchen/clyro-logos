@@ -1,30 +1,41 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Download, Trash2, Search } from "lucide-react"
+import { useState } from "react";
+import { Download, Trash2, Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useUser } from "@clerk/clerk-react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export function ImageGallery() {
-  const [searchQuery, setSearchQuery] = useState("")
+  const { user } = useUser();
+  const clerkUserId = user?.id;
+  const galleryImages = useQuery(
+    api.images.getUserImages,
+    clerkUserId ? { clerkUserId } : "skip"
+  );
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Mock data for gallery images
-  const galleryImages = Array(12)
-    .fill(0)
-    .map((_, i) => ({
-      id: i,
-      src: `/placeholder.svg?height=512&width=512`,
-      prompt:
-        i % 2 === 0
-          ? "A futuristic cityscape with flying cars and neon lights"
-          : "A serene landscape with mountains and a lake at sunset",
-      createdAt: new Date(Date.now() - i * 86400000).toLocaleDateString(),
-    }))
-
-  const filteredImages = galleryImages.filter((image) => image.prompt.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredImages = galleryImages
+    ? galleryImages.filter((image) =>
+        image.prompt.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="space-y-6">
@@ -55,10 +66,13 @@ export function ImageGallery() {
       {filteredImages.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredImages.map((image) => (
-            <div key={image.id} className="group relative overflow-hidden rounded-lg border">
+            <div
+              key={image._id}
+              className="group relative overflow-hidden rounded-lg border"
+            >
               <div className="aspect-square">
                 <img
-                  src={image.src || "/placeholder.svg"}
+                  src={image.imageUrl || "/placeholder.svg"}
                   alt={image.prompt}
                   className="h-full w-full object-cover transition-transform group-hover:scale-105"
                 />
@@ -67,7 +81,11 @@ export function ImageGallery() {
                 <div className="flex justify-end">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="secondary" size="icon" className="h-8 w-8">
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="h-8 w-8"
+                      >
                         <span className="sr-only">Open menu</span>
                         <svg
                           width="15"
@@ -100,7 +118,9 @@ export function ImageGallery() {
                 </div>
                 <div>
                   <p className="text-xs text-white/70">{image.createdAt}</p>
-                  <p className="mt-1 line-clamp-2 text-sm font-medium text-white">{image.prompt}</p>
+                  <p className="mt-1 line-clamp-2 text-sm font-medium text-white">
+                    {image.prompt}
+                  </p>
                 </div>
               </div>
             </div>
@@ -111,11 +131,12 @@ export function ImageGallery() {
           <div className="flex flex-col items-center gap-1 text-center">
             <Search className="h-10 w-10 text-muted-foreground" />
             <h3 className="font-medium">No images found</h3>
-            <p className="text-sm text-muted-foreground">Try adjusting your search query</p>
+            <p className="text-sm text-muted-foreground">
+              Try adjusting your search query
+            </p>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
-

@@ -26,6 +26,7 @@ export function ImageGenerationForm() {
   const clerkUserId = user?.id;
 
   const subtractTokens = useMutation(api.tokens.subtractUserTokens);
+  const saveImageToGallery = useMutation(api.images.addUserImage);
 
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -60,6 +61,11 @@ export function ImageGenerationForm() {
 
       await subtractTokens({ clerkUserId, amount: price });
       setGeneratedImages([data.output]);
+      await saveImageToGallery({
+        clerkUserId,
+        imageUrl: data.output,
+        prompt,
+      });
       setIsGenerating(false);
     } catch (err) {
       console.error("Error generating logo or subtracting tokens", err);
