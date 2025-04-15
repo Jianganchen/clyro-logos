@@ -40,7 +40,7 @@ export const addUserImage = mutation({
       userId: user._id,
       imageUrl: args.imageUrl,
       prompt: args.prompt,
-      createdAt: Date.now().toString(),
+      createdAt: Date.now(),
     });
   },
 });

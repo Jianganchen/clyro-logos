@@ -18,7 +18,7 @@ export default defineSchema({
     userId: v.id("users"),
     imageUrl: v.string(),
     prompt: v.string(),
-    createdAt: v.string(),
+    createdAt: v.number(),
   }).index("byUser", ["userId"]),
 
   subscriptionPlans: defineTable({

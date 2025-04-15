@@ -117,7 +117,9 @@ export function ImageGallery() {
                   </DropdownMenu>
                 </div>
                 <div>
-                  <p className="text-xs text-white/70">{image.createdAt}</p>
+                  <p className="text-xs text-white/70">
+                    {new Date(image.createdAt).toLocaleDateString()}
+                  </p>
                   <p className="mt-1 line-clamp-2 text-sm font-medium text-white">
                     {image.prompt}
                   </p>
