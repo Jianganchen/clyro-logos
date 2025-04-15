@@ -19,16 +19,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUser } from "@clerk/clerk-react";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 export function ImageGallery() {
   const { user } = useUser();
   const clerkUserId = user?.id;
+
   const galleryImages = useQuery(
     api.images.getUserImages,
     clerkUserId ? { clerkUserId } : "skip"
   );
+  const deleteImageFromGallery = useMutation(api.images.deleteUserImage);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredImages = galleryImages
@@ -36,6 +40,19 @@ export function ImageGallery() {
         image.prompt.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
+
+  const handleDeleteImageFromGallery = async (imageId: string) => {
+    if (!clerkUserId) {
+      console.error("User not found");
+      return;
+    }
+
+    try {
+      await deleteImageFromGallery({ imageId: imageId as Id<"images"> });
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -109,7 +126,10 @@ export function ImageGallery() {
                         <Download className="mr-2 h-4 w-4" />
                         <span>Download</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="flex items-center text-destructive focus:text-destructive">
+                      <DropdownMenuItem
+                        className="flex items-center text-destructive focus:text-destructive"
+                        onClick={() => handleDeleteImageFromGallery(image._id)}
+                      >
                         <Trash2 className="mr-2 h-4 w-4" />
                         <span>Delete</span>
                       </DropdownMenuItem>
