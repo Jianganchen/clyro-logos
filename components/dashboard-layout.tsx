@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Image, Settings, Menu, Sparkles } from "lucide-react";
 
-import { IconCoin } from "@tabler/icons-react";
+import { IconBolt } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -107,8 +107,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex items-center gap-4">
             {userTokens && (
               <div className="flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-sm font-medium">
-                <IconCoin className="h-4 w-4 text-primary" />
-                {userTokens.tokens}
+                <IconBolt className="h-5 w-5 text-green-600" />
+                <span className="text-gray-500">tokens: </span>
+                <span>{userTokens.tokens}</span>
               </div>
             )}
             <UserButton />
