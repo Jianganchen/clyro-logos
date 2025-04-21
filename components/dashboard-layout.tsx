@@ -5,7 +5,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Image, Settings, Menu, Sparkles } from "lucide-react";
+import { LayoutDashboard, Image, Settings, Menu } from "lucide-react";
 
 import { IconBolt } from "@tabler/icons-react";
 
@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Logo } from "./logo";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -75,8 +76,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <SheetContent side="left" className="w-[240px] sm:w-[300px]">
                 <nav className="flex flex-col gap-6">
                   <Link href="/" className="flex items-center gap-2 px-2 py-1">
-                    <Sparkles className="h-6 w-6 text-primary" />
-                    <span className="text-xl font-bold">ImageAI</span>
+                    <Logo className="w-9 h-9" />
+                    <span className="text-xl font-bold">ClyroLogo</span>
                   </Link>
                   <div className="flex flex-col gap-2">
                     {navigation.map((item) => (
@@ -98,10 +99,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               </SheetContent>
             </Sheet>
             <Link href="/" className="flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold hidden md:inline-block">
-                ImageAI
-              </span>
+              <Logo className="w-9 h-9" />
+              <span className="text-xl font-bold">ClyroLogo</span>
             </Link>
           </div>
           <div className="flex items-center gap-4">

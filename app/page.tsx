@@ -189,7 +189,7 @@ export default function Home() {
             <span className="font-semibold">ClyroLogo</span>
           </div>
           <p className="text-center text-sm text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} ImageAI. All rights reserved.
+            &copy; {new Date().getFullYear()} ClyroLogo. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Link
