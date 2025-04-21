@@ -1,3 +1,5 @@
+import { Plan } from "./definitions";
+
 export const logos = [
   {
     src: "/sample-logos/logo1.png",
@@ -37,3 +39,58 @@ export const logos = [
 ];
 
 export const ImageGenPrice = 10;
+
+export const pricingPlans: Plan[] = [
+  {
+    name: "Free",
+    planId: "price_1RGOZXGuc4UupVSmURXx7k1A",
+    testPlanId: "price_1REYgUGuc4UupVSm894dgCZj",
+    description: "Perfect for trying out our service",
+    price: "$0",
+    features: [
+      "5 images per day",
+      "Standard resolution",
+      "Basic styles",
+      "24-hour support",
+    ],
+    cta: "Get Started",
+    popular: false,
+  },
+  {
+    name: "Pro",
+    // Change planId later
+    planId: "price_1RGOZXGuc4UupVSmURXx7k1A",
+    testPlanId: "price_1REYgUGuc4UupVSm894dgCZj",
+    description: "For professionals and serious creators",
+    price: "$19",
+    features: [
+      "100 images per day",
+      "High resolution",
+      "All styles",
+      "Priority support",
+      "Commercial usage",
+      "No watermarks",
+    ],
+    cta: "Get Started",
+    popular: true,
+  },
+  {
+    name: "Enterprise",
+    // Change planId later
+    planId: "price_1RGOZXGuc4UupVSmURXx7k1A",
+    testPlanId: "price_1REYgUGuc4UupVSm894dgCZj",
+    description: "For teams and businesses",
+    price: "$49",
+    features: [
+      "Unlimited images",
+      "Maximum resolution",
+      "Custom styles",
+      "Dedicated support",
+      "API access",
+      "Team collaboration",
+      "Custom branding",
+    ],
+    cta: "Get Started",
+    popular: false,
+  },
+];
