@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { toast } from "sonner";
-import { useEffect } from "react";
-import { useClerk } from "@clerk/nextjs";
-import { useSearchParams } from "next/navigation";
+// import { toast } from "sonner";
+// import { useEffect } from "react";
+// import { useClerk } from "@clerk/nextjs";
+// import { useSearchParams } from "next/navigation";
 // import { retrieveStripeCheckoutSession } from '@/lib/actions'
 import { MoveLeft } from "lucide-react";
 
 export default function Checkout() {
-  const { session } = useClerk();
-  const searchParams = useSearchParams();
-  const sessionId = searchParams.get("sessionId");
+  // const { session } = useClerk();
+  // const searchParams = useSearchParams();
+  // const sessionId = searchParams.get("sessionId");
 
   // useEffect(() => {
   //   if (!sessionId || !session) return
