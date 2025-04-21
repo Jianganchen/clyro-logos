@@ -1,3 +1,4 @@
+import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
@@ -7,6 +8,11 @@ const client = new OpenAI({
 
 export async function POST(req: Request) {
   const { prompt } = await req.json();
+
+  const user = await currentUser();
+  if (!user) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
   try {
     const response = await client.images.generate({
