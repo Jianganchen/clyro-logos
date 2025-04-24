@@ -16,15 +16,25 @@ export async function POST(req: Request) {
 
   try {
     const response = await client.images.generate({
-      model: "dall-e-3",
+      model: "gpt-image-1",
       prompt: prompt,
-      n: 1,
+      // n: 1,
       size: "1024x1024",
+      background: "transparent",
+      quality: "medium",
     });
 
-    const output = response.data[0].url;
+    const output = response.data![0].b64_json;
+    if (!output) {
+      return NextResponse.json(
+        { error: "No image generated" },
+        { status: 500 }
+      );
+    }
 
-    return NextResponse.json({ output });
+    const dataUrl = `data:image/png;base64,${output}`;
+
+    return NextResponse.json({ imageUrl: dataUrl });
   } catch (err) {
     console.error("OpenAI API error:", err);
     return NextResponse.json(

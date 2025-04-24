@@ -55,15 +55,15 @@ export function ImageGenerationForm() {
 
       const data = await res.json();
 
-      if (!data.output) {
+      if (!data.imageUrl) {
         console.error(data.error);
       }
 
       await subtractTokens({ clerkUserId, amount: price });
-      setGeneratedImages([data.output]);
+      setGeneratedImages([data.imageUrl]);
       await saveImageToGallery({
         clerkUserId,
-        imageUrl: data.output,
+        imageUrl: data.imageUrl,
         prompt,
       });
       setIsGenerating(false);
