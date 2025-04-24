@@ -1,8 +1,8 @@
 export default function Page({
-  searchParams: { checkoutId },
+  searchParams,
 }: {
-  searchParams: {
-    checkoutId: string;
+  searchParams?: {
+    checkoutId?: string;
   };
 }) {
   // Checkout has been confirmed
@@ -11,7 +11,7 @@ export default function Page({
   return (
     <div>
       <h1>Thank you! Your checkout is now being processed.</h1>
-      <p>checkoutId: {checkoutId}</p>
+      <p>checkoutId: {searchParams?.checkoutId}</p>
     </div>
   );
 }
