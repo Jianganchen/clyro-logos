@@ -1,5 +1,3 @@
-"use client";
-
 import { Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -11,86 +9,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { pricingPlans } from "@/lib/data";
-import { Plan } from "@/lib/definitions";
-import { createStripeCheckoutSession } from "@/lib/actions";
-import { loadStripe } from "@stripe/stripe-js";
+import { api } from "@/lib/polar";
+import Link from "next/link";
 
-// Test Mode
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST as string
-);
-
-// const stripePromise = loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
-// );
-
-export function PricingCards() {
-  const plans = pricingPlans;
-
-  async function handleCheckout(plan: Plan) {
-    try {
-      // Test Mode
-      const lineItems = [
-        {
-          price: plan.testPlanId,
-          quantity: 1,
-        },
-      ];
-
-      // const lineItems = [
-      //   {
-      //     price: plan.planId,
-      //     quantity: 1,
-      //   },
-      // ];
-
-      const { sessionId, checkoutError } =
-        await createStripeCheckoutSession(lineItems);
-
-      if (!sessionId || checkoutError) {
-        throw new Error(checkoutError || "Failed to create checkout session!");
-      }
-
-      const stripe = await stripePromise;
-      if (!stripe) {
-        throw new Error("Failed to load Stripe");
-      }
-
-      const { error } = await stripe.redirectToCheckout({ sessionId });
-
-      if (error) {
-        if (error instanceof Error) throw new Error(error.message);
-      } else {
-        throw error;
-      }
-    } catch (error) {
-      // Change this to toast or notification later
-      console.log("Error during checkout:", error);
-    }
-  }
+export async function PricingCards() {
+  const products = await api.products.list({ isArchived: false });
+  console.log(products);
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-      {plans.map((plan) => (
-        <Card
-          key={plan.name}
-          className={`flex flex-col ${
-            plan.popular
-              ? "border-primary shadow-md relative before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-primary before:content-[''] before:pointer-events-none"
-              : ""
-          }`}
-        >
-          {plan.popular && (
-            <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
-              Most Popular
-            </div>
-          )}
+      {products.result.items.map((plan) => (
+        <Card key={plan.name} className="flex flex-col">
           <CardHeader>
             <CardTitle>{plan.name}</CardTitle>
             <CardDescription>{plan.description}</CardDescription>
             <div className="mt-4 flex items-baseline text-5xl font-extrabold">
-              {plan.price}
+              {"priceAmount" in plan.prices[0]
+                ? plan.prices[0].priceAmount / 100
+                : "Free"}
               <span className="ml-1 text-2xl font-medium text-muted-foreground">
                 /month
               </span>
@@ -98,24 +34,21 @@ export function PricingCards() {
           </CardHeader>
           <CardContent className="flex-1">
             <ul className="space-y-3">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex items-center gap-2">
+              {plan.benefits.map((benefit) => (
+                <li key={benefit.id} className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  <span className="text-sm">{feature}</span>
+                  <span className="text-sm">{benefit.description}</span>
                 </li>
               ))}
             </ul>
           </CardContent>
           <CardFooter>
             <div className="w-full">
-              <Button
-                variant={plan.popular ? "default" : "outline"}
-                className="w-full"
-                size="lg"
-                onClick={() => handleCheckout(plan)}
-              >
-                {plan.cta}
-              </Button>
+              <Link href={`/checkout?products=${plan.id}`} key={plan.id}>
+                <Button variant={"outline"} className="w-full" size="lg">
+                  Get started
+                </Button>
+              </Link>
             </div>
           </CardFooter>
         </Card>
