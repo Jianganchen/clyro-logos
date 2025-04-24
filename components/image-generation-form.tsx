@@ -108,13 +108,14 @@ export function ImageGenerationForm() {
 
           <div className="space-y-2">
             <Label>Model</Label>
-            <Select defaultValue="DALL-E-2">
+            <Select defaultValue="GPT-image-1">
               <SelectTrigger>
                 <SelectValue placeholder="Select model" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="DALL-E-2">DALL-E-2</SelectItem>
                 <SelectItem value="DALL-E-3">DALL-E-3</SelectItem>
+                <SelectItem value="GPT-image-1">GPT-image-1</SelectItem>
               </SelectContent>
             </Select>
           </div>
