@@ -1,14 +1,17 @@
-export default function Success({
-  searchParams,
+export default function Page({
+  searchParams: { checkoutId },
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: {
+    checkoutId: string;
+  };
 }) {
-  const checkoutId = searchParams.checkoutId as string;
+  // Checkout has been confirmed
+  // Now, make sure to capture the Checkout.updated webhook event to update the order status in your system
 
   return (
     <div>
-      <h1>success</h1>
-      <p>Checkout ID: {checkoutId}</p>
+      <h1>Thank you! Your checkout is now being processed.</h1>
+      <p>checkoutId: {checkoutId}</p>
     </div>
   );
 }
