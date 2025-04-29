@@ -21,9 +21,22 @@ export default defineSchema({
     createdAt: v.number(),
   }).index("byUser", ["userId"]),
 
-  subscriptionPlans: defineTable({
-    name: v.union(v.literal("free"), v.literal("starter"), v.literal("pro")),
-    monthlyQuota: v.number(),
-    price: v.number(),
-  }),
+  subscriptions: defineTable({
+    clerkUserId: v.string(),
+    polarId: v.string(),
+    polarPriceId: v.string(),
+    status: v.string(),
+    currentPeriodStart: v.optional(v.number()),
+    currentPeriodEnd: v.optional(v.number()),
+    cancelAtPeriodEnd: v.optional(v.boolean()),
+    startedAt: v.optional(v.number()),
+    endsAt: v.optional(v.number()),
+    endedAt: v.optional(v.number()),
+    canceledAt: v.optional(v.number()),
+    customerCancellationReason: v.optional(v.string()),
+    customerCancellationComment: v.optional(v.string()),
+    metadata: v.optional(v.any()),
+  })
+    .index("byClerkUserId", ["clerkUserId"])
+    .index("byPolarId", ["polarId"]),
 });
