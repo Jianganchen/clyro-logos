@@ -22,7 +22,7 @@ export default defineSchema({
   }).index("byUser", ["userId"]),
 
   subscriptions: defineTable({
-    clerkUserId: v.string(),
+    clerkUserId: v.optional(v.string()),
     polarId: v.string(),
     polarPriceId: v.string(),
     status: v.string(),

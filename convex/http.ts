@@ -3,6 +3,7 @@ import { httpAction } from "./_generated/server";
 import { internal } from "./_generated/api";
 import type { WebhookEvent } from "@clerk/backend";
 import { Webhook } from "svix";
+import { paymentWebhook } from "./subscriptions";
 
 const http = httpRouter();
 
@@ -33,6 +34,12 @@ http.route({
 
     return new Response(null, { status: 200 });
   }),
+});
+
+http.route({
+  path: "/payments/webhook",
+  method: "POST",
+  handler: paymentWebhook,
 });
 
 async function validateRequest(req: Request): Promise<WebhookEvent | null> {

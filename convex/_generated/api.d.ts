@@ -17,6 +17,7 @@ import type * as auth from "../auth.js";
 import type * as helpers from "../helpers.js";
 import type * as http from "../http.js";
 import type * as images from "../images.js";
+import type * as subscriptions from "../subscriptions.js";
 import type * as tokens from "../tokens.js";
 import type * as users from "../users.js";
 
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   helpers: typeof helpers;
   http: typeof http;
   images: typeof images;
+  subscriptions: typeof subscriptions;
   tokens: typeof tokens;
   users: typeof users;
 }>;
