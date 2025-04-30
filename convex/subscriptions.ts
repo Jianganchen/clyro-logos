@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
-import { httpAction, mutation } from "./_generated/server";
+import { httpAction, mutation, query } from "./_generated/server";
 
 export const paymentWebhook = httpAction(async (ctx, request) => {
   try {
@@ -38,6 +38,7 @@ export const subscriptionStoreWebhook = mutation({
       case "subscription.created":
         // Insert new subscription
         await ctx.db.insert("subscriptions", {
+          clerkUserId: args.body.data.metadata.userId,
           polarId: args.body.data.id,
           polarPriceId: args.body.data.price_id,
           status: args.body.data.status,
@@ -165,5 +166,39 @@ export const subscriptionStoreWebhook = mutation({
         console.log(`Unhandled event type: ${eventType}`);
         break;
     }
+  },
+});
+
+export const getUserSubscription = query({
+  args: { clerkUserId: v.string() },
+  handler: async (ctx, args) => {
+    const userSubscription = await ctx.db
+      .query("subscriptions")
+      .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", args.clerkUserId))
+      .unique();
+
+    if (!userSubscription) {
+      return null;
+    }
+
+    return userSubscription;
+  },
+});
+
+export const getUserSubscriptionStatus = query({
+  args: { clerkUserId: v.string() },
+  handler: async (ctx, args) => {
+    const userSubscription = await ctx.db
+      .query("subscriptions")
+      .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", args.clerkUserId))
+      .unique();
+
+    if (!userSubscription) {
+      return null;
+    }
+
+    const hasActiveSubscription = userSubscription?.status === "active";
+
+    return { hasActiveSubscription };
   },
 });

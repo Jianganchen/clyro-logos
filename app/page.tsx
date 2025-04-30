@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { PricingCards } from "@/components/pricing-cards";
+import { Pricing } from "@/components/pricing";
 import { Features } from "@/components/features";
 import {
   SignedIn,
@@ -140,7 +140,7 @@ export default function Home() {
                 amazing images today.
               </p>
             </div>
-            <PricingCards />
+            <Pricing />
           </div>
         </section>
 
