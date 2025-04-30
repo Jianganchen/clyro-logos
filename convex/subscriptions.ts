@@ -38,7 +38,7 @@ export const subscriptionStoreWebhook = mutation({
       case "subscription.created":
         // Insert new subscription
         await ctx.db.insert("subscriptions", {
-          clerkUserId: args.body.data.metadata.userId,
+          clerkUserId: args.body.data.metadata.clerkUserId,
           polarId: args.body.data.id,
           polarPriceId: args.body.data.price_id,
           status: args.body.data.status,

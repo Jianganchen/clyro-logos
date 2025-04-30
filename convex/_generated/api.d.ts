@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as auth from "../auth.js";
+import type * as checkout from "../checkout.js";
 import type * as helpers from "../helpers.js";
 import type * as http from "../http.js";
 import type * as images from "../images.js";
@@ -31,6 +32,7 @@ import type * as users from "../users.js";
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  checkout: typeof checkout;
   helpers: typeof helpers;
   http: typeof http;
   images: typeof images;

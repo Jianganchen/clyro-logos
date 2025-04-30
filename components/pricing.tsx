@@ -1,8 +1,8 @@
-import { api } from "@/lib/polar";
+import { polar } from "@/lib/polar";
 import { PricingCard } from "./pricing-card";
 
 export async function Pricing() {
-  const products = await api.products.list({ isArchived: false });
+  const products = await polar.products.list({ isArchived: false });
   console.log(products);
 
   return (

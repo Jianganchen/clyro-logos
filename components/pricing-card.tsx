@@ -1,4 +1,6 @@
-import { Check, Link } from "lucide-react";
+"use client";
+
+import { Check } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -9,8 +11,38 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Product } from "@polar-sh/sdk/models/components/product.js";
+import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/navigation";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export function PricingCard({ plan }: { plan: Product }) {
+  const { user } = useUser();
+  const router = useRouter();
+  const getCheckoutUrl = useAction(api.checkout.getCheckoutUrl);
+
+  const handleCheckout = async (planId: string, userId: string) => {
+    if (!planId) return;
+
+    try {
+      const checkout = await getCheckoutUrl({
+        priceId: planId,
+        userId: userId,
+      });
+      window.location.href = checkout;
+    } catch (error) {
+      console.error("Failed to get checkout URL:", error);
+    }
+  };
+
+  const handleButtonClick = (planId: string, userId: string | undefined) => {
+    if (!userId) {
+      router.push("/sign-in");
+      return;
+    }
+    handleCheckout(planId, userId);
+  };
+
   return (
     <Card key={plan.name} className="flex flex-col">
       <CardHeader>
@@ -37,7 +69,12 @@ export function PricingCard({ plan }: { plan: Product }) {
       </CardContent>
       <CardFooter>
         <div className="w-full">
-          <Button variant={"outline"} className="w-full" size="lg">
+          <Button
+            variant={"outline"}
+            className="w-full"
+            size="lg"
+            onClick={() => handleButtonClick(plan.id, user?.id)}
+          >
             Get started
           </Button>
         </div>
