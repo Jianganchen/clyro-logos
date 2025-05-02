@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Wand2, Loader2, ImagePlus, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,10 @@ export function ImageGenerationForm() {
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [imageCount, setImageCount] = useState<number>(1);
 
+  const canvasRef = useRef<{ exportCanvas: () => Promise<string | undefined> }>(
+    null
+  );
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
@@ -47,12 +51,29 @@ export function ImageGenerationForm() {
     setIsGenerating(true);
 
     try {
+      const canvasDataUrl = await canvasRef.current?.exportCanvas();
+
+      if (!canvasDataUrl) {
+        console.error("Canvas image export failed.");
+        setIsGenerating(false);
+        return;
+      }
+
+      // convert the canvas url to blob
+      const imageRes = await fetch(canvasDataUrl);
+      const blob = await imageRes.blob();
+      const file = new File([blob], "sketch.png", { type: "image/png" });
+
+      const formData = new FormData();
+      formData.append("prompt", prompt);
+      formData.append("file", file);
+
       const res = await fetch("/api/ai", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
+        body: formData,
       });
 
       const data = await res.json();
@@ -83,7 +104,7 @@ export function ImageGenerationForm() {
         <Card className="p-6">
           <div className="space-y-2 w-full h-full pb-5">
             <Label>Canvas</Label>
-            <Canvas />
+            <Canvas ref={canvasRef} />
           </div>
         </Card>
 

@@ -1,4 +1,10 @@
-import { useRef, useState, type ChangeEvent } from "react";
+import {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 
 import {
   ReactSketchCanvas,
@@ -8,13 +14,23 @@ import { Button } from "./ui/button";
 import { Eraser, Pen, Redo, RotateCcw, Save, Undo } from "lucide-react";
 import { Slider } from "./ui/slider";
 
-export default function Canvas() {
+const Canvas = forwardRef(function Canvas(
+  {},
+  ref: React.Ref<{ exportCanvas: () => Promise<string | undefined> }>
+) {
   const colorInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [strokeColor, setStrokeColor] = useState("#a855f7");
   const [strokeWidth, setStrokeWidth] = useState(5);
   const [eraserWidth, setEraserWidth] = useState(10);
   const [eraseMode, setEraseMode] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    async exportCanvas() {
+      const dataUrl = await canvasRef.current?.exportImage("png");
+      return dataUrl;
+    },
+  }));
 
   function handleStrokeColorChange(event: ChangeEvent<HTMLInputElement>) {
     setStrokeColor(event.target.value);
@@ -169,4 +185,6 @@ export default function Canvas() {
       />
     </div>
   );
-}
+});
+
+export default Canvas;

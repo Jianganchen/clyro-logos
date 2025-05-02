@@ -7,7 +7,10 @@ const client = new OpenAI({
 });
 
 export async function POST(req: Request) {
-  const { prompt } = await req.json();
+  const formData = await req.formData();
+
+  const prompt = formData.get("prompt") as string;
+  const file = formData.get("file") as File;
 
   const user = await currentUser();
   if (!user) {
@@ -15,12 +18,13 @@ export async function POST(req: Request) {
   }
 
   try {
-    const response = await client.images.generate({
+    const response = await client.images.edit({
       model: "gpt-image-1",
       prompt: prompt,
       // n: 1,
+      image: file,
       size: "1024x1024",
-      background: "transparent",
+      // background: "transparent",
       quality: "medium",
     });
 
