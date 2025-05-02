@@ -1,8 +1,6 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageGenerationForm } from "@/components/image-generation-form";
-import { ImageGallery } from "@/components/image-gallery";
 
 export default function DashboardPage() {
   return (
@@ -13,19 +11,7 @@ export default function DashboardPage() {
           Generate and manage your AI logo
         </p>
       </div>
-
-      <Tabs defaultValue="generate" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
-          <TabsTrigger value="generate">Generate</TabsTrigger>
-          <TabsTrigger value="gallery">My Gallery</TabsTrigger>
-        </TabsList>
-        <TabsContent value="generate" className="mt-6">
-          <ImageGenerationForm />
-        </TabsContent>
-        <TabsContent value="gallery" className="mt-6">
-          <ImageGallery />
-        </TabsContent>
-      </Tabs>
+      <ImageGenerationForm />
     </div>
   );
 }
