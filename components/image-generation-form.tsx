@@ -21,6 +21,8 @@ import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
+import { ReactSketchCanvas } from "react-sketch-canvas";
+
 export function ImageGenerationForm() {
   const { user } = useUser();
   const clerkUserId = user?.id;
@@ -75,7 +77,77 @@ export function ImageGenerationForm() {
   };
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
+    <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Canvas area */}
+        <Card className="p-6">
+          <div className="space-y-2 w-full h-full pb-5">
+            <Label>Canvas</Label>
+            <ReactSketchCanvas
+              width="100%"
+              height="100%"
+              canvasColor="transparent"
+              strokeColor="#a855f7"
+            />
+          </div>
+        </Card>
+
+        {/* output area */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Generated Images</h3>
+          {isGenerating ? (
+            <div className="grid grid-cols-2 gap-4">
+              {Array(imageCount)
+                .fill(0)
+                .map((_, i) => (
+                  <div
+                    key={i}
+                    className="aspect-square rounded-md bg-muted flex items-center justify-center"
+                  >
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                  </div>
+                ))}
+            </div>
+          ) : generatedImages.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4">
+              {generatedImages.map((src, i) => (
+                <div
+                  key={i}
+                  className="group relative aspect-square rounded-md overflow-hidden"
+                >
+                  <img
+                    src={src || "/placeholder.svg"}
+                    alt={`Generated image ${i + 1}`}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100">
+                    <Button variant="secondary" size="sm" className="mr-2">
+                      <ImagePlus className="h-4 w-4 mr-1" />
+                      Save
+                    </Button>
+                    <Button variant="secondary" size="sm">
+                      <RefreshCw className="h-4 w-4 mr-1" />
+                      Vary
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex h-[400px] items-center justify-center rounded-md border border-dashed">
+              <div className="flex flex-col items-center gap-1 text-center">
+                <ImagePlus className="h-10 w-10 text-muted-foreground" />
+                <h3 className="font-medium">No images generated yet</h3>
+                <p className="text-sm text-muted-foreground">
+                  Enter a prompt and click generate to create images
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* form area */}
       <Card className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -90,128 +162,79 @@ export function ImageGenerationForm() {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label>Style</Label>
-            <Select defaultValue="realistic">
-              <SelectTrigger>
-                <SelectValue placeholder="Select style" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="realistic">Realistic</SelectItem>
-                <SelectItem value="anime">Anime</SelectItem>
-                <SelectItem value="3d">3D Render</SelectItem>
-                <SelectItem value="cartoon">Cartoon</SelectItem>
-                <SelectItem value="painting">Painting</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex flex-row gap-4">
+              <div className="space-y-2">
+                <Label>Style</Label>
+                <Select defaultValue="realistic">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select style" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="realistic">Realistic</SelectItem>
+                    <SelectItem value="anime">Anime</SelectItem>
+                    <SelectItem value="3d">3D Render</SelectItem>
+                    <SelectItem value="cartoon">Cartoon</SelectItem>
+                    <SelectItem value="painting">Painting</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <div className="space-y-2">
-            <Label>Model</Label>
-            <Select defaultValue="GPT-image-1">
-              <SelectTrigger>
-                <SelectValue placeholder="Select model" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="DALL-E-2">DALL-E-2</SelectItem>
-                <SelectItem value="DALL-E-3">DALL-E-3</SelectItem>
-                <SelectItem value="GPT-image-1">GPT-image-1</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+              <div className="space-y-2">
+                <Label>Model</Label>
+                <Select defaultValue="GPT-image-1">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select model" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="DALL-E-2">DALL-E-2</SelectItem>
+                    <SelectItem value="DALL-E-3">DALL-E-3</SelectItem>
+                    <SelectItem value="GPT-image-1">GPT-image-1</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <div className="space-y-2">
-            <Label>Number of Images</Label>
-            <Select
-              value={imageCount.toString()}
-              onValueChange={(value) => setImageCount(Number(value))}
+              {/* <div className="space-y-2">
+              <Label>Number of Images</Label>
+              <Select
+                value={imageCount.toString()}
+                onValueChange={(value) => setImageCount(Number(value))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select number" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="4">4</SelectItem>
+                  <SelectItem value="8">8</SelectItem>
+                </SelectContent>
+              </Select>
+            </div> */}
+            </div>
+
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isGenerating || !prompt.trim()}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select number" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1</SelectItem>
-                <SelectItem value="4">4</SelectItem>
-                <SelectItem value="8">8</SelectItem>
-              </SelectContent>
-            </Select>
+              {isGenerating ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Wand2 className="mr-2 h-4 w-4" />
+                  <span>Generate Images</span>
+                  <span className="rounded-full bg-muted text-muted-foreground px-2 py-0.5 text-xs font-medium">
+                    {price} tokens
+                  </span>
+                </>
+              )}
+            </Button>
           </div>
-
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isGenerating || !prompt.trim()}
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Generating...
-              </>
-            ) : (
-              <>
-                <Wand2 className="mr-2 h-4 w-4" />
-                <span>Generate Images</span>
-                <span className="rounded-full bg-muted text-muted-foreground px-2 py-0.5 text-xs font-medium">
-                  {price} tokens
-                </span>
-              </>
-            )}
-          </Button>
         </form>
       </Card>
-
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Generated Images</h3>
-        {isGenerating ? (
-          <div className="grid grid-cols-2 gap-4">
-            {Array(imageCount)
-              .fill(0)
-              .map((_, i) => (
-                <div
-                  key={i}
-                  className="aspect-square rounded-md bg-muted flex items-center justify-center"
-                >
-                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </div>
-              ))}
-          </div>
-        ) : generatedImages.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4">
-            {generatedImages.map((src, i) => (
-              <div
-                key={i}
-                className="group relative aspect-square rounded-md overflow-hidden"
-              >
-                <img
-                  src={src || "/placeholder.svg"}
-                  alt={`Generated image ${i + 1}`}
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100">
-                  <Button variant="secondary" size="sm" className="mr-2">
-                    <ImagePlus className="h-4 w-4 mr-1" />
-                    Save
-                  </Button>
-                  <Button variant="secondary" size="sm">
-                    <RefreshCw className="h-4 w-4 mr-1" />
-                    Vary
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex h-[400px] items-center justify-center rounded-md border border-dashed">
-            <div className="flex flex-col items-center gap-1 text-center">
-              <ImagePlus className="h-10 w-10 text-muted-foreground" />
-              <h3 className="font-medium">No images generated yet</h3>
-              <p className="text-sm text-muted-foreground">
-                Enter a prompt and click generate to create images
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
