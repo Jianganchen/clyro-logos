@@ -21,7 +21,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-import { ReactSketchCanvas } from "react-sketch-canvas";
+import Canvas from "./canvas";
 
 export function ImageGenerationForm() {
   const { user } = useUser();
@@ -83,12 +83,7 @@ export function ImageGenerationForm() {
         <Card className="p-6">
           <div className="space-y-2 w-full h-full pb-5">
             <Label>Canvas</Label>
-            <ReactSketchCanvas
-              width="100%"
-              height="100%"
-              canvasColor="transparent"
-              strokeColor="#a855f7"
-            />
+            <Canvas />
           </div>
         </Card>
 
