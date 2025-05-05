@@ -29,6 +29,8 @@ export const getUserDashboardUrl = action({
 
 - [ ] Add switch between text-only input and text-and-sketch input
 
+- [ ] Add image download, background removal functionality
+
 - [ ] Add model selection functionality
 
 - [ ] Re-design the pricing (possibly)
