@@ -27,6 +27,8 @@ export const getUserDashboardUrl = action({
 
 -- basic flow: in dashboard page, user can navigate to finance page -> user can cick on buttons like "manage subscriptions" -> Takes user to polar-hosted session site -> cancel subscription
 
+- [ ] Add switch between text-only input and text-and-sketch input
+
 - [ ] Add model selection functionality
 
 - [ ] Re-design the pricing (possibly)
