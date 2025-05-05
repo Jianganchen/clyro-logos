@@ -104,7 +104,7 @@ export function ImageGenerationForm() {
       setGeneratedImages([data.imageUrl]);
       await saveImageToGallery({
         clerkUserId,
-        imageUrl: storageId,
+        storageId: storageId,
         prompt,
       });
       setIsGenerating(false);

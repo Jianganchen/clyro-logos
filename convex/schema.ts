@@ -16,7 +16,7 @@ export default defineSchema({
 
   images: defineTable({
     userId: v.id("users"),
-    imageUrl: v.string(),
+    storageId: v.id("_storage"),
     prompt: v.string(),
     createdAt: v.number(),
   }).index("byUser", ["userId"]),

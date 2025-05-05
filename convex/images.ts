@@ -25,14 +25,19 @@ export const getUserImages = query({
       .withIndex("byUser", (q) => q.eq("userId", user._id))
       .collect();
 
-    return images;
+    return Promise.all(
+      images.map(async (image) => ({
+        ...image,
+        imageUrl: await ctx.storage.getUrl(image.storageId),
+      }))
+    );
   },
 });
 
 export const addUserImage = mutation({
   args: {
     clerkUserId: v.string(),
-    imageUrl: v.string(),
+    storageId: v.id("_storage"),
     prompt: v.string(),
   },
   handler: async (ctx, args) => {
@@ -44,7 +49,7 @@ export const addUserImage = mutation({
 
     await ctx.db.insert("images", {
       userId: user._id,
-      imageUrl: args.imageUrl,
+      storageId: args.storageId,
       prompt: args.prompt,
       createdAt: Date.now(),
     });
