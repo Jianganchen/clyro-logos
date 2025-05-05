@@ -29,6 +29,7 @@ export function ImageGenerationForm() {
 
   const subtractTokens = useMutation(api.tokens.subtractUserTokens);
   const saveImageToGallery = useMutation(api.images.addUserImage);
+  const generateUploadUrl = useMutation(api.images.generateUploadUrl);
 
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -82,11 +83,28 @@ export function ImageGenerationForm() {
         console.error(data.error);
       }
 
+      const imageBlob = await fetch(data.imageUrl).then((res) => res.blob());
+
+      const postUrl = await generateUploadUrl();
+      const result = await fetch(postUrl, {
+        method: "POST",
+        headers: { "Content-Type": blob.type },
+        body: imageBlob,
+      });
+
+      const json = await result.json();
+      if (!result.ok) {
+        throw new Error(
+          `Upload image to storage failed: ${JSON.stringify(json)}`
+        );
+      }
+      const { storageId } = json;
+
       await subtractTokens({ clerkUserId, amount: price });
       setGeneratedImages([data.imageUrl]);
       await saveImageToGallery({
         clerkUserId,
-        imageUrl: data.imageUrl,
+        imageUrl: storageId,
         prompt,
       });
       setIsGenerating(false);

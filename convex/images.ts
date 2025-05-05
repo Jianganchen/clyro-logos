@@ -3,6 +3,12 @@ import { mutation, query } from "./_generated/server";
 
 import { userByClerkUserIdHelper as userByClerkUserId } from "./helpers";
 
+export const generateUploadUrl = mutation({
+  handler: async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  },
+});
+
 export const getUserImages = query({
   args: {
     clerkUserId: v.string(),
