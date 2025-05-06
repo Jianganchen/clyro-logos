@@ -15,6 +15,8 @@ export interface ProductProps {
   };
 }
 
+export type OpenAIBackground = "transparent" | "opaque" | "auto";
+
 interface Product {
   id: string;
   name: string;

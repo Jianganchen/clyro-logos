@@ -1,3 +1,4 @@
+import { OpenAIBackground } from "@/lib/definitions";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
@@ -11,6 +12,7 @@ export async function POST(req: Request) {
 
   const prompt = formData.get("prompt") as string;
   const file = formData.get("file") as File;
+  const background = formData.get("background") as OpenAIBackground;
 
   const user = await currentUser();
   if (!user) {
@@ -24,7 +26,7 @@ export async function POST(req: Request) {
       // n: 1,
       image: file,
       size: "1024x1024",
-      background: "transparent",
+      background: background,
       quality: "medium",
     });
 

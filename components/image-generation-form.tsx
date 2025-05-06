@@ -34,6 +34,7 @@ export function ImageGenerationForm() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState("");
+  const [background, setBackground] = useState("transparent");
 
   const canvasRef = useRef<{ exportCanvas: () => Promise<string | undefined> }>(
     null
@@ -67,6 +68,7 @@ export function ImageGenerationForm() {
       const formData = new FormData();
       formData.append("prompt", prompt);
       formData.append("file", file);
+      formData.append("background", background);
 
       const res = await fetch("/api/ai", {
         method: "POST",
@@ -211,22 +213,22 @@ export function ImageGenerationForm() {
                 </Select>
               </div>
 
-              {/* <div className="space-y-2">
-              <Label>Number of Images</Label>
-              <Select
-                value={imageCount.toString()}
-                onValueChange={(value) => setImageCount(Number(value))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select number" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
-                  <SelectItem value="8">8</SelectItem>
-                </SelectContent>
-              </Select>
-            </div> */}
+              <div className="space-y-2">
+                <Label>Background</Label>
+                <Select
+                  value={background}
+                  onValueChange={(value) => setBackground(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select background" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="transparent">transparent</SelectItem>
+                    <SelectItem value="opaque">opaque</SelectItem>
+                    <SelectItem value="auto">auto</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <Button
