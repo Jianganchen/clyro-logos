@@ -1,4 +1,11 @@
+import { Images, Settings2, SquareTerminal } from "lucide-react";
 import { Plan } from "./definitions";
+
+export const iconMap = {
+  "icon-square-terminal": SquareTerminal,
+  "icon-images": Images,
+  "icon-settings2": Settings2,
+} as const;
 
 export const logos = [
   {

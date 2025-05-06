@@ -1,7 +1,4 @@
-"use client";
-
 import * as React from "react";
-import { Settings2, SquareTerminal, Images } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
@@ -16,34 +13,35 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { Logo } from "./logo";
-import { useUser } from "@clerk/clerk-react";
+import { currentUser } from "@clerk/nextjs/server";
 
 const data = {
   navMain: [
     {
       name: "Playground",
       url: "/dashboard",
-      icon: SquareTerminal,
+      icon: "icon-square-terminal",
       isActive: true,
     },
     {
       name: "Gallery",
       url: "/dashboard/gallery",
-      icon: Images,
+      icon: "icon-images",
       isActive: false,
     },
-
     {
       name: "Settings",
       url: "/dashboard/settings",
-      icon: Settings2,
+      icon: "icon-settings2",
       isActive: false,
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user } = useUser();
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const user = await currentUser();
 
   if (!user) {
     return null;
