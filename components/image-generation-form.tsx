@@ -33,8 +33,7 @@ export function ImageGenerationForm() {
 
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-  const [imageCount, setImageCount] = useState<number>(1);
+  const [generatedImage, setGeneratedImage] = useState("");
 
   const canvasRef = useRef<{ exportCanvas: () => Promise<string | undefined> }>(
     null
@@ -71,9 +70,6 @@ export function ImageGenerationForm() {
 
       const res = await fetch("/api/ai", {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
         body: formData,
       });
 
@@ -101,7 +97,7 @@ export function ImageGenerationForm() {
       const { storageId } = json;
 
       await subtractTokens({ clerkUserId, amount: price });
-      setGeneratedImages([data.imageUrl]);
+      setGeneratedImage(data.imageUrl);
       await saveImageToGallery({
         clerkUserId,
         storageId: storageId,
@@ -127,58 +123,45 @@ export function ImageGenerationForm() {
         </Card>
 
         {/* output area */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Generated Images</h3>
-          {isGenerating ? (
-            <div className="grid grid-cols-2 gap-4">
-              {Array(imageCount)
-                .fill(0)
-                .map((_, i) => (
-                  <div
-                    key={i}
-                    className="aspect-square rounded-md bg-muted flex items-center justify-center"
-                  >
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                  </div>
-                ))}
-            </div>
-          ) : generatedImages.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4">
-              {generatedImages.map((src, i) => (
-                <div
-                  key={i}
-                  className="group relative aspect-square rounded-md overflow-hidden"
-                >
-                  <img
-                    src={src || "/placeholder.svg"}
-                    alt={`Generated image ${i + 1}`}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100">
-                    <Button variant="secondary" size="sm" className="mr-2">
-                      <ImagePlus className="h-4 w-4 mr-1" />
-                      Save
-                    </Button>
-                    <Button variant="secondary" size="sm">
-                      <RefreshCw className="h-4 w-4 mr-1" />
-                      Vary
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex h-[400px] items-center justify-center rounded-md border border-dashed">
-              <div className="flex flex-col items-center gap-1 text-center">
-                <ImagePlus className="h-10 w-10 text-muted-foreground" />
-                <h3 className="font-medium">No images generated yet</h3>
-                <p className="text-sm text-muted-foreground">
-                  Enter a prompt and click generate to create images
-                </p>
+
+        <Card className="p-6">
+          <div className="space-y-2 w-full h-full pb-5">
+            <Label>Generated Image</Label>
+            {isGenerating ? (
+              <div className="aspect-square rounded-md bg-muted flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               </div>
-            </div>
-          )}
-        </div>
+            ) : generatedImage ? (
+              <div className="group relative aspect-square rounded-md overflow-hidden max-h-[500px]">
+                <img
+                  src={generatedImage || "/placeholder.svg"}
+                  alt={`Generated image`}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100">
+                  <Button variant="secondary" size="sm" className="mr-2">
+                    <ImagePlus className="h-4 w-4 mr-1" />
+                    Save
+                  </Button>
+                  <Button variant="secondary" size="sm">
+                    <RefreshCw className="h-4 w-4 mr-1" />
+                    Vary
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex h-full items-center justify-center rounded-md border border-dashed">
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <ImagePlus className="h-10 w-10 text-muted-foreground" />
+                  <h3 className="font-medium">No images generated yet</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Enter a prompt and click generate to create images
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </Card>
       </div>
 
       {/* form area */}

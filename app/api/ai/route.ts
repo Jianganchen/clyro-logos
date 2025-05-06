@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       // n: 1,
       image: file,
       size: "1024x1024",
-      // background: "transparent",
+      background: "transparent",
       quality: "medium",
     });
 
