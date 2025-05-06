@@ -20,7 +20,7 @@ const Canvas = forwardRef(function Canvas(
 ) {
   const colorInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
-  const [strokeColor, setStrokeColor] = useState("#a855f7");
+  const [strokeColor, setStrokeColor] = useState("#2a90ad");
   const [strokeWidth, setStrokeWidth] = useState(5);
   const [eraserWidth, setEraserWidth] = useState(10);
   const [eraseMode, setEraseMode] = useState(false);
