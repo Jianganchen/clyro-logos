@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "./logo";
 import { currentUser } from "@clerk/nextjs/server";
+import { fetchQuery } from "convex/nextjs";
+import { api } from "@/convex/_generated/api";
 
 const data = {
   navMain: [
@@ -47,10 +49,16 @@ export async function AppSidebar({
     return null;
   }
 
+  const clerkUserId = user?.id;
+  const tokenResponse = await fetchQuery(api.tokens.getUserTokens, {
+    clerkUserId,
+  });
+
   const navUser = {
     name: user.fullName as string,
     email: user.emailAddresses[0].emailAddress,
     avatar: user.imageUrl,
+    tokens: tokenResponse.tokens,
   };
 
   return (

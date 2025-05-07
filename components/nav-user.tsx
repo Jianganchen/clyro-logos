@@ -9,6 +9,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { IconBolt } from "@tabler/icons-react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -35,6 +37,7 @@ export function NavUser({
     name: string;
     email: string;
     avatar: string;
+    tokens: number;
   };
 }) {
   const { isMobile } = useSidebar();
@@ -52,9 +55,10 @@ export function NavUser({
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+              <div className="flex gap-1 font-medium items-center text-left text-sm leading-tight">
+                <IconBolt className="h-5 w-5 text-green-600" />
+                <span className="text-gray-500">tokens: </span>
+                <span>{user.tokens}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>

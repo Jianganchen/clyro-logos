@@ -3,6 +3,7 @@ import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import Provider from "@/app/provider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "ClyroLogo",
@@ -20,6 +21,7 @@ export default function RootLayout({
       <html lang="en">
         <body>
           <Provider>{children}</Provider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
