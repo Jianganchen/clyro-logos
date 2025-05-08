@@ -7,6 +7,10 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+export const config = {
+  runtime: "edge",
+};
+
 export async function POST(req: Request) {
   const formData = await req.formData();
 
