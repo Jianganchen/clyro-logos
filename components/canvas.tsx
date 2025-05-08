@@ -14,8 +14,12 @@ import { Button } from "./ui/button";
 import { Eraser, Pen, Redo, RotateCcw, Save, Undo } from "lucide-react";
 import { Slider } from "./ui/slider";
 
+interface CanvasProps {
+  canEdit: boolean;
+}
+
 const Canvas = forwardRef(function Canvas(
-  {},
+  { canEdit }: CanvasProps,
   ref: React.Ref<{ exportCanvas: () => Promise<string | undefined> }>
 ) {
   const colorInputRef = useRef<HTMLInputElement>(null);
@@ -83,6 +87,7 @@ const Canvas = forwardRef(function Canvas(
           type="button"
           onClick={() => colorInputRef.current?.click()}
           style={{ backgroundColor: strokeColor }}
+          disabled={!canEdit}
         >
           <input
             type="color"
@@ -98,7 +103,7 @@ const Canvas = forwardRef(function Canvas(
           size="icon"
           type="button"
           variant="outline"
-          disabled={!eraseMode}
+          disabled={!eraseMode || !canEdit}
           onClick={handlePenClick}
         >
           <Pen size={16} />
@@ -109,7 +114,7 @@ const Canvas = forwardRef(function Canvas(
             max={100}
             step={1}
             value={[strokeWidth]}
-            disabled={eraseMode}
+            disabled={eraseMode || !canEdit}
             id="strokeWidth"
             onValueChange={(value) => setStrokeWidth(value[0])}
           />
@@ -119,7 +124,7 @@ const Canvas = forwardRef(function Canvas(
           size="icon"
           type="button"
           variant="outline"
-          disabled={eraseMode}
+          disabled={eraseMode || !canEdit}
           onClick={handleEraserClick}
         >
           <Eraser size={16} />
@@ -131,7 +136,7 @@ const Canvas = forwardRef(function Canvas(
             max={100}
             step={1}
             value={[eraserWidth]}
-            disabled={!eraseMode}
+            disabled={!eraseMode || !canEdit}
             id="eraserWidth"
             onValueChange={(value) => setEraserWidth(value[0])}
           />
@@ -143,6 +148,7 @@ const Canvas = forwardRef(function Canvas(
           type="button"
           variant="outline"
           onClick={handleUndoClick}
+          disabled={!canEdit}
         >
           <Undo size={16} />
         </Button>
@@ -151,6 +157,7 @@ const Canvas = forwardRef(function Canvas(
           type="button"
           variant="outline"
           onClick={handleRedoClick}
+          disabled={!canEdit}
         >
           <Redo size={16} />
         </Button>
@@ -159,17 +166,9 @@ const Canvas = forwardRef(function Canvas(
           type="button"
           variant="outline"
           onClick={handleClearClick}
+          disabled={!canEdit}
         >
           <RotateCcw size={16} />
-        </Button>
-
-        <Button
-          size="icon"
-          type="button"
-          variant="outline"
-          onClick={handleSave}
-        >
-          <Save size={16} />
         </Button>
       </div>
 
@@ -182,6 +181,7 @@ const Canvas = forwardRef(function Canvas(
         eraserWidth={eraserWidth}
         canvasColor="transparent"
         className="!rounded-2xl !border-gray-200 "
+        allowOnlyPointerType={canEdit ? undefined : "none"}
       />
     </div>
   );

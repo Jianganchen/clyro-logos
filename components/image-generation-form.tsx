@@ -22,6 +22,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 import Canvas from "./canvas";
+import { Switch } from "./ui/switch";
 
 export function ImageGenerationForm() {
   const { user } = useUser();
@@ -35,6 +36,7 @@ export function ImageGenerationForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState("");
   const [background, setBackground] = useState("transparent");
+  const [useCanvas, setUseCanvas] = useState(true);
 
   const canvasRef = useRef<{ exportCanvas: () => Promise<string | undefined> }>(
     null
@@ -119,8 +121,15 @@ export function ImageGenerationForm() {
         {/* Canvas area */}
         <Card className="p-6">
           <div className="space-y-2 w-full h-full pb-5">
-            <Label>Canvas</Label>
-            <Canvas ref={canvasRef} />
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="use-canvas">Canvas</Label>
+              <Switch
+                id="use-canvas"
+                checked={useCanvas}
+                onCheckedChange={() => setUseCanvas((prev) => !prev)}
+              />
+            </div>
+            <Canvas ref={canvasRef} canEdit={useCanvas} />
           </div>
         </Card>
 
