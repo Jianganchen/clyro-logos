@@ -253,7 +253,9 @@ export function ImageGenerationForm() {
               ) : (
                 <>
                   <Wand2 className="mr-2 h-4 w-4" />
-                  <span>Generate Images</span>
+                  <span>
+                    Generate Logo {!useCanvas && "(text-prompt-only)"}
+                  </span>
                   <span className="rounded-full bg-muted text-muted-foreground px-2 py-0.5 text-xs font-medium">
                     {price} tokens
                   </span>
