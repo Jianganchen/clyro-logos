@@ -72,10 +72,20 @@ export function ImageGenerationForm() {
       formData.append("file", file);
       formData.append("background", background);
 
-      const res = await fetch("/api/ai", {
-        method: "POST",
-        body: formData,
-      });
+      let res;
+      if (useCanvas) {
+        res = await fetch("/api/ai/canvas", {
+          method: "POST",
+          body: formData,
+        });
+      } else if (!useCanvas) {
+        res = await fetch("/api/ai/text", {
+          method: "POST",
+          body: formData,
+        });
+      } else {
+        throw new Error("Invalid request");
+      }
 
       const data = await res.json();
 
