@@ -1,3 +1,7 @@
+## AI logo generator
+
+A full-fledged AI SaaS web project
+
 ## Under Construction
 
 - [ ] Add unsubscribe session for users (code below)
